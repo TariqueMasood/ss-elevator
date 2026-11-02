@@ -26,7 +26,7 @@ export default function Contact() {
             <input type="email" placeholder="Email" value={f.email} onChange={set("email")} />
             <select value={f.purpose} onChange={set("purpose")}><option>Customer</option><option>Supplier</option><option>Career</option></select>
             <textarea required rows="4" placeholder="Tell us what you need" value={f.msg} onChange={set("msg")} />
-            <button className="btn" type="submit">Send via WhatsApp</button>
+            <button className="btn whatsapp" type="submit">Send via WhatsApp</button>
           </form>
         </div>
       </div>
