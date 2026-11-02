@@ -44,6 +44,7 @@ export default function Footer() {
               <h4>Contact</h4>
               <a href={`tel:+${SITE.phone}`}>{SITE.phoneDisplay}</a>
               <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+              <a href={SITE.web} target="_blank" rel="noopener noreferrer">{SITE.web}</a>
               <span>{SITE.address}</span>
             </div>
           </div>

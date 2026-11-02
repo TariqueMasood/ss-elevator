@@ -17,7 +17,7 @@ export default function Contact() {
           <p className="sub">Send your enquiry — it opens directly in WhatsApp.</p>
           <p><b>Phone:</b> <a href={`tel:+${SITE.phone}`}>{SITE.phoneDisplay}</a></p>
           <p><b>Email:</b> <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-          <p><b>Web:</b> {SITE.web}</p>
+          <p><b>Web:</b> <a href={SITE.web} target="_blank" rel="noopener noreferrer">{SITE.web}</a></p>
           <p><b>Address:</b> {SITE.address}</p>
         </div>
         <div className="card">
