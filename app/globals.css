@@ -231,11 +231,37 @@ textarea {
 }
 .pc {
   display: block;
-  transition: 0.15s;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
-.pc:hover {
+.pc:hover,
+.pc:focus-visible {
   border-color: var(--acc);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px #173a4a1a;
+}
+.pc .ph img {
+  transition: transform 0.25s ease;
+}
+.pc:hover .ph img,
+.pc:focus-visible .ph img {
+  transform: scale(1.05);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc,
+  .pc .ph img {
+    transition: none;
+  }
+  .pc:hover,
+  .pc:focus-visible {
+    transform: none;
+  }
+  .pc:hover .ph img,
+  .pc:focus-visible .ph img {
+    transform: none;
+  }
 }
 .more {
   margin-top: 12px;
