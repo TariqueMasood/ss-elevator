@@ -14,7 +14,7 @@ export default function Header() {
         <button className="burger" aria-label="Menu" onClick={() => setOpen(!open)}>{open ? "✕" : "☰"}</button>
         <nav className={"links" + (open ? " open" : "")}>
           {LINKS.map(([n, h]) => <Link key={n} href={h} onClick={() => setOpen(false)}>{n}</Link>)}
-          <a className="btn" href="/ss-elevator-components.pdf" download="SS. Elevetor. Componets.pdf" onClick={() => setOpen(false)}>Download PDF</a>
+          <Link className="btn" href="/catalog" onClick={() => setOpen(false)}>PDF Catalog</Link>
           <a className="btn whatsapp" href={wa()} target="_blank" rel="noopener">WhatsApp</a>
         </nav>
       </div>
