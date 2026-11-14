@@ -548,6 +548,78 @@ form {
   display: grid;
   gap: 12px;
 }
+.contact-form {
+  gap: 14px;
+}
+.contact-field {
+  display: grid;
+  gap: 5px;
+}
+.contact-field > label {
+  color: var(--tx);
+  font-size: 14px;
+  font-weight: 600;
+}
+.contact-field input[aria-invalid="true"],
+.contact-field select[aria-invalid="true"],
+.contact-field textarea[aria-invalid="true"],
+.contact-field .phone-input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus,
+.phone-input:focus-within {
+  outline: 2px solid #e4a52e66;
+  outline-offset: 1px;
+}
+.phone-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--tx);
+}
+.phone-input .PhoneInputCountry {
+  flex: none;
+  margin: 0;
+}
+.phone-input .PhoneInputCountrySelect {
+  width: auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.phone-input .PhoneInputInput {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  outline: 0;
+}
+.field-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 13px;
+}
+.contact-status {
+  margin: 0;
+  font-size: 14px;
+}
+.contact-status.success {
+  color: #256d43;
+}
+.contact-status.error {
+  color: #b42318;
+}
 footer {
   background: #0c2633;
   color: #d5dfe5;

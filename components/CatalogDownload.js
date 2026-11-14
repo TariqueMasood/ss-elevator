@@ -26,13 +26,7 @@ export default function CatalogDownload() {
         throw new Error(result.error || "Could not prepare the catalog download.");
       }
 
-      const link = document.createElement("a");
-      link.href = "/ss-elevator-components.pdf";
-      link.download = "ss-elevator-components.pdf";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setStatus("Thank you. Your download has started.");
+      setStatus("The download link has been emailed to you. Please check your inbox.");
       form.reset();
     } catch (error) {
       setStatus(error.message);
@@ -76,8 +70,7 @@ export default function CatalogDownload() {
             </button>
             <h2 id="catalog-form-title">Download the catalog</h2>
             <p className="sub">
-              Share your details so our team can follow up on your catalog
-              request.
+              Share your details and we will email you a link to the catalog.
             </p>
             <form onSubmit={submitRequest}>
               <label>
@@ -118,7 +111,7 @@ export default function CatalogDownload() {
                 </span>
               </label>
               <button className="btn" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Preparing download..." : "Submit and download"}
+                {isSubmitting ? "Sending email..." : "Email me the download link"}
               </button>
               <p className="catalog-status" role="status" aria-live="polite">
                 {status}

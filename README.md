@@ -9,18 +9,24 @@
 - Styles: `app/globals.css`
 - Deploy: push to GitHub and import in Vercel (zero config), or `npx vercel`.
 
-## Catalog PDF notifications
+## Catalog PDF email notifications
 
 The catalog is previewed at `/catalog`. A visitor's explicit download request
-sends a notification email before the PDF is returned. Configure these server
-environment variables for local development and deployment:
+sends a confirmation email to the visitor and a lead notification to the owner
+before the browser downloads the PDF. SMTP is used only by the server. Configure
+these environment variables for local development and deployment:
 
-- `RESEND_API_KEY`: API key from Resend.
-- `RESEND_FROM_EMAIL`: sender address on a domain verified with Resend.
-- `CATALOG_NOTIFICATION_EMAIL`: optional notification recipient; defaults to
-  the site email in `lib/config.js`.
+- `SMTP_HOST`: SMTP server hostname.
+- `SMTP_PORT`: SMTP port; defaults to `587` when omitted. Port `465` uses TLS.
+- `SMTP_USERNAME`: SMTP login and sender email address.
+- `SMTP_PASSWORD`: SMTP password or provider-issued app password.
+- `OWNER_EMAIL`: recipient for download request notifications.
 
-The PDF is stored in `private/` and included in the Next.js server output for
-the catalog API route. The in-browser preview is still accessible without
-submitting the form, so this flow collects details for explicit download
-requests but does not prevent saving or capturing the preview.
+Email failures are logged and do not prevent the download request from
+succeeding. The PDF remains in `public/` for the preview and download; as a
+result, its URL is public and the preview can be saved without submitting the
+form.
+
+The Contact form uses the same SMTP settings to send an owner notification and
+a customer acknowledgement. It includes an optional international phone
+number; no additional environment variables are required.
