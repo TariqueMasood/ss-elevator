@@ -8,13 +8,15 @@ export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }) {
-  const p = products.find((x) => x.slug === params.slug);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const p = products.find((x) => x.slug === slug);
   return p ? { title: `${p.name} (${p.code}) – SS Elevator`, description: p.description } : {};
 }
 
-export default function ProductPage({ params }) {
-  const p = products.find((x) => x.slug === params.slug);
+export default async function ProductPage({ params }) {
+  const { slug } = await params;
+  const p = products.find((x) => x.slug === slug);
   if (!p) notFound();
   const related = products.filter((x) => x.category === p.category && x.slug !== p.slug).slice(0, 3);
   return (
