@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 import {
-  isValidPhoneNumber,
-  parsePhoneNumber,
-} from "libphonenumber-js/min";
-import {
   sendCustomerAcknowledgementEmail,
   sendOwnerContactEmail,
   type ContactSubmission,
@@ -53,8 +49,6 @@ export async function POST(request: Request) {
   const name = cleanText(payload.name, 120);
   const email = typeof payload.email === "string" ? payload.email.trim() : "";
   const message = typeof payload.message === "string" ? payload.message.trim() : "";
-  const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
-  const phoneCountryCode = cleanText(payload.phoneCountryCode, 5);
   const customerType = payload.customerType;
 
   if (
@@ -63,8 +57,7 @@ export async function POST(request: Request) {
     email.length > 254 ||
     !isCustomerType(customerType) ||
     message.length < MIN_MESSAGE_LENGTH ||
-    message.length > 4000 ||
-    (payload.phone !== undefined && typeof payload.phone !== "string")
+    message.length > 4000
   ) {
     return NextResponse.json(
       { error: "Please check your name, email, customer type, and message." },
@@ -72,42 +65,9 @@ export async function POST(request: Request) {
     );
   }
 
-  let normalizedPhone = "";
-  let normalizedPhoneCountryCode = "";
-  if (phone) {
-    if (!isValidPhoneNumber(phone)) {
-      return NextResponse.json(
-        { error: "Please enter a valid international phone number." },
-        { status: 400 },
-      );
-    }
-
-    const parsedPhone = parsePhoneNumber(phone);
-    if (!parsedPhone) {
-      return NextResponse.json(
-        { error: "Please enter a valid international phone number." },
-        { status: 400 },
-      );
-    }
-    normalizedPhone = parsedPhone.number;
-    normalizedPhoneCountryCode = `+${parsedPhone.countryCallingCode}`;
-
-    if (
-      !/^\+\d{1,4}$/.test(phoneCountryCode) ||
-      phoneCountryCode !== normalizedPhoneCountryCode
-    ) {
-      return NextResponse.json(
-        { error: "Please select a valid country code for your phone number." },
-        { status: 400 },
-      );
-    }
-  }
-
   const submission: ContactSubmission = {
     name,
     email,
-    phone: normalizedPhone,
-    phoneCountryCode: normalizedPhoneCountryCode,
     customerType,
     message,
   };

@@ -1,21 +1,16 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import PhoneInput, {
-  isValidPhoneNumber,
-  parsePhoneNumber,
-} from "react-phone-number-input";
 import { SITE } from "@/lib/config";
 
 const CUSTOMER_TYPES = ["Customer", "Supplier", "Career"] as const;
 type CustomerType = (typeof CUSTOMER_TYPES)[number];
-type FormField = "name" | "email" | "customerType" | "message" | "phone";
+type FormField = "name" | "email" | "customerType" | "message";
 type ContactForm = {
   name: string;
   email: string;
   customerType: CustomerType | "";
   message: string;
-  phone: string;
 };
 type FormErrors = Partial<Record<FormField, string>>;
 type FormStatus = { type: "success" | "error"; message: string } | null;
@@ -25,7 +20,6 @@ const INITIAL_FORM: ContactForm = {
   email: "",
   customerType: "Customer",
   message: "",
-  phone: "",
 };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_MESSAGE_LENGTH = 10;
@@ -52,10 +46,6 @@ function validateForm(form: ContactForm): FormErrors {
   if (message.length < MIN_MESSAGE_LENGTH) {
     errors.message = `Please enter at least ${MIN_MESSAGE_LENGTH} characters.`;
   }
-  if (form.phone && !isValidPhoneNumber(form.phone)) {
-    errors.phone = "Please enter a valid international phone number.";
-  }
-
   return errors;
 }
 
@@ -96,7 +86,6 @@ export default function Contact() {
 
     setIsSubmitting(true);
     try {
-      const parsedPhone = form.phone ? parsePhoneNumber(form.phone) : undefined;
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,10 +94,6 @@ export default function Contact() {
           email: form.email.trim(),
           customerType: form.customerType,
           message: form.message.trim(),
-          phone: form.phone,
-          phoneCountryCode: parsedPhone
-            ? `+${parsedPhone.countryCallingCode}`
-            : "",
         }),
       });
 
@@ -156,12 +141,6 @@ export default function Contact() {
             <b>Email:</b> <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
           </p>
           <p>
-            <b>Web:</b>{" "}
-            <a href={SITE.web} target="_blank" rel="noopener noreferrer">
-              {SITE.web}
-            </a>
-          </p>
-          <p>
             <b>Address:</b> {SITE.address}
           </p>
         </div>
@@ -206,29 +185,6 @@ export default function Contact() {
               {errors.email && (
                 <p className="field-error" id="contact-email-error">
                   {errors.email}
-                </p>
-              )}
-            </div>
-
-            <div className="contact-field">
-              <label htmlFor="contact-phone">Phone Number (optional)</label>
-              <PhoneInput
-                id="contact-phone"
-                name="phone"
-                className="phone-input"
-                international
-                defaultCountry="IN"
-                countryCallingCodeEditable={false}
-                value={form.phone || undefined}
-                onChange={(value) => updateField("phone", value || "")}
-                aria-invalid={Boolean(errors.phone)}
-                aria-describedby={
-                  errors.phone ? "contact-phone-error" : undefined
-                }
-              />
-              {errors.phone && (
-                <p className="field-error" id="contact-phone-error">
-                  {errors.phone}
                 </p>
               )}
             </div>

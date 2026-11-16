@@ -28,5 +28,4 @@ result, its URL is public and the preview can be saved without submitting the
 form.
 
 The Contact form uses the same SMTP settings to send an owner notification and
-a customer acknowledgement. It includes an optional international phone
-number; no additional environment variables are required.
+a customer acknowledgement. No additional environment variables are required.

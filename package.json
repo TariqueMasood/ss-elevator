@@ -8,16 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
-    "libphonenumber-js": "^1.13.16",
     "next": "14.2.15",
     "nodemailer": "^10.5.0",
     "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-phone-number-input": "^3.4.18"
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@types/node": "26.6.6",
     "@types/nodemailer": "^8.0.2",
-    "@types/react": "^18.3.28",
-    "typescript": "^5.7.3"
+    "@types/react": "18.3.31",
+    "typescript": "5.9.3"
   }
 }

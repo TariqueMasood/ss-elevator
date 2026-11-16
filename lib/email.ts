@@ -17,8 +17,6 @@ export interface DownloadRequestDetails extends RequestMetadata {
 export interface ContactSubmission {
   name: string;
   email: string;
-  phone: string;
-  phoneCountryCode: string;
   customerType: string;
   message: string;
 }
@@ -177,11 +175,6 @@ function ownerNotificationHtml(
   );
 }
 
-function contactPhone(submission: ContactSubmission): string {
-  if (!submission.phone) return "Not Provided";
-  return `${submission.phone} (country code ${submission.phoneCountryCode})`;
-}
-
 function ownerContactHtml(
   submission: ContactSubmission,
   metadata: RequestMetadata,
@@ -189,7 +182,6 @@ function ownerContactHtml(
   const fields: Array<[string, string, boolean]> = [
     ["Name", submission.name, true],
     ["Email", submission.email, true],
-    ["Phone Number", contactPhone(submission), true],
     ["Customer Type", submission.customerType, true],
     ["Message", submission.message, false],
     ["Date & Time (Server, UTC)", metadata.requestedAt, false],
@@ -214,9 +206,6 @@ function customerAcknowledgementHtml(submission: ContactSubmission): string {
   const summaryFields: Array<[string, string, boolean]> = [
     ["Name", submission.name, false],
     ["Email", submission.email, false],
-    ...(submission.phone
-      ? [["Phone Number", contactPhone(submission), false] as [string, string, boolean]]
-      : []),
     ["Customer Type", submission.customerType, false],
     ["Message", submission.message, false],
   ];
@@ -241,7 +230,6 @@ function ownerContactText(
     "📩 A new enquiry has been submitted through the website.",
     `Name: ${submission.name}`,
     `Email: ${submission.email}`,
-    `Phone Number: ${contactPhone(submission)}`,
     `Customer Type: ${submission.customerType}`,
     `Message: ${submission.message}`,
     `Date & Time (Server, UTC): ${metadata.requestedAt}`,
@@ -266,7 +254,6 @@ function customerAcknowledgementText(submission: ContactSubmission): string {
     "Your enquiry summary:",
     `Name: ${submission.name}`,
     `Email: ${submission.email}`,
-    ...(submission.phone ? [`Phone Number: ${contactPhone(submission)}`] : []),
     `Customer Type: ${submission.customerType}`,
     `Message: ${submission.message}`,
     "",
