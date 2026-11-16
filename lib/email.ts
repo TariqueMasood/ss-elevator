@@ -1,4 +1,3 @@
-// @ts-ignore -- `server-only` is a runtime marker without TypeScript declarations.
 import "server-only";
 
 import nodemailer, { type Transporter } from "nodemailer";
@@ -31,6 +30,24 @@ interface SmtpConfig {
 
 const NOT_AVAILABLE = "Not Available";
 let transporter: Transporter | undefined;
+
+function formatRequestedAt(value: string): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "UTC",
+    timeZoneName: "short",
+  }).formatToParts(new Date(value));
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((item) => item.type === type)?.value ?? "";
+  const date = `${part("month")} ${part("day")}, ${part("weekday")}, ${part("year")}`;
+  const time = `${part("hour")}:${part("minute")} ${part("dayPeriod")} ${part("timeZoneName")}`;
+  return `${date} at ${time}`;
+}
 
 function requiredEnv(name: string): string {
   const value = process.env[name]?.trim();
@@ -156,14 +173,8 @@ function ownerNotificationHtml(
     ["User Name", lead.name, true],
     ["User Email", lead.email, true],
     ["Company Name", lead.company || NOT_AVAILABLE, true],
-    ["Date & Time (Server, UTC)", details.requestedAt, false],
-    ["Browser", details.browser, false],
-    ["Operating System", details.operatingSystem, false],
+    ["Date & Time (UTC)", formatRequestedAt(details.requestedAt), false],
     ["Device Type", details.deviceType, false],
-    ["User Agent", details.userAgent, false],
-    ["IP Address", details.ipAddress, false],
-    ["Referrer", details.referrer, false],
-    ["Language", details.language, false],
     ["Requested Download URL", details.downloadUrl, false],
     ["Request ID", details.requestId, false],
   ];
@@ -185,14 +196,8 @@ function ownerContactHtml(
     ["Email", submission.email, true],
     ["Customer Type", submission.customerType, true],
     ["Message", submission.message, false],
-    ["Date & Time (Server, UTC)", metadata.requestedAt, false],
-    ["Browser", metadata.browser, false],
-    ["Operating System", metadata.operatingSystem, false],
+    ["Date & Time (UTC)", formatRequestedAt(metadata.requestedAt), false],
     ["Device Type", metadata.deviceType, false],
-    ["IP Address", metadata.ipAddress, false],
-    ["User Agent", metadata.userAgent, false],
-    ["Preferred Language", metadata.language, false],
-    ["Referrer", metadata.referrer, false],
     ["Request ID", metadata.requestId, false],
   ];
 
@@ -233,14 +238,8 @@ function ownerContactText(
     `Email: ${submission.email}`,
     `Customer Type: ${submission.customerType}`,
     `Message: ${submission.message}`,
-    `Date & Time (Server, UTC): ${metadata.requestedAt}`,
-    `Browser: ${metadata.browser}`,
-    `Operating System: ${metadata.operatingSystem}`,
+    `Date & Time (UTC): ${formatRequestedAt(metadata.requestedAt)}`,
     `Device Type: ${metadata.deviceType}`,
-    `IP Address: ${metadata.ipAddress}`,
-    `User Agent: ${metadata.userAgent}`,
-    `Preferred Language: ${metadata.language}`,
-    `Referrer: ${metadata.referrer}`,
     `Request ID: ${metadata.requestId}`,
   ].join("\n");
 }
@@ -285,14 +284,8 @@ function ownerNotificationText(
     `User Name: ${lead.name}`,
     `User Email: ${lead.email}`,
     `Company Name: ${lead.company || NOT_AVAILABLE}`,
-    `Date & Time (Server, UTC): ${details.requestedAt}`,
-    `Browser: ${details.browser}`,
-    `Operating System: ${details.operatingSystem}`,
+    `Date & Time (UTC): ${formatRequestedAt(details.requestedAt)}`,
     `Device Type: ${details.deviceType}`,
-    `User Agent: ${details.userAgent}`,
-    `IP Address: ${details.ipAddress}`,
-    `Referrer: ${details.referrer}`,
-    `Language: ${details.language}`,
     `Requested Download URL: ${details.downloadUrl}`,
     `Request ID: ${details.requestId}`,
   ].join("\n");
