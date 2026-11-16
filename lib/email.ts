@@ -1,3 +1,4 @@
+// @ts-ignore -- `server-only` is a runtime marker without TypeScript declarations.
 import "server-only";
 
 import nodemailer, { type Transporter } from "nodemailer";

@@ -60,14 +60,15 @@ header {
   font-size: 20px;
   color: var(--pri);
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
 }
-.logo b {
-  background: var(--acc);
-  color: #123b4a;
-  border-radius: 8px;
-  padding: 2px 8px;
+.logo-mark {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 6px;
 }
 .links {
   display: flex;
