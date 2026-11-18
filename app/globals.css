@@ -720,6 +720,51 @@ footer a:hover {
 .fab:hover {
   transform: translateY(-3px);
 }
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--on-primary);
+  box-shadow: 0 6px 18px var(--shadow-floating);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease,
+    visibility 0s linear 0.2s;
+}
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease,
+    visibility 0s;
+}
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  background: var(--hero-middle);
+  transform: translateY(-2px);
+}
+.back-to-top:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
 .copy {
   border-top: 1px solid var(--footer-divider);
   margin-top: 28px;
@@ -737,6 +782,9 @@ footer a:hover {
   .thumbs button {
     transition: none;
   }
+  .back-to-top {
+    transition: none;
+  }
   .btn:hover,
   .btn:focus-visible,
   .btn:active,
@@ -745,6 +793,8 @@ footer a:hover {
   .wa:active,
   .fab:hover,
   .fab:focus-visible,
+  .back-to-top:hover,
+  .back-to-top:focus-visible,
   .tab:hover:not(.on),
   .tab:focus-visible:not(.on),
   .burger:hover,

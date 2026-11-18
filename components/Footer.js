@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SITE, wa } from "@/lib/config";
 import { categories } from "@/lib/products";
+import BackToTop from "./BackToTop";
 
 const WaIcon = ({ s = 20 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="currentColor">
@@ -62,6 +63,7 @@ export default function Footer() {
       >
         <WaIcon s={30} />
       </a>
+      <BackToTop />
     </>
   );
 }
