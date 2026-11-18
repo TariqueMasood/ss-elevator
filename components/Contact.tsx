@@ -134,15 +134,20 @@ export default function Contact() {
           <p className="sub">
             Send us your enquiry and our team will be in touch.
           </p>
-          <p>
-            <b>Phone:</b> <a href={`tel:+${SITE.phone}`}>{SITE.phoneDisplay}</a>
-          </p>
-          <p>
-            <b>Email:</b> <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-          </p>
-          <p>
-            <b>Address:</b> {SITE.address}
-          </p>
+          <div className="contact-details">
+            <p>
+              <b>Phone</b>
+              <a href={`tel:+${SITE.phone}`}>{SITE.phoneDisplay}</a>
+            </p>
+            <p>
+              <b>Email</b>
+              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            </p>
+            <p>
+              <b>Address</b>
+              <span>{SITE.address}</span>
+            </p>
+          </div>
         </div>
         <div className="card" data-reveal>
           <form className="contact-form" noValidate onSubmit={submit}>

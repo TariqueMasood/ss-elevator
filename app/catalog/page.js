@@ -20,7 +20,7 @@ export default function CatalogPage() {
             title="SS Elevator components catalog PDF"
           />
         </div>
-        <div data-reveal><CatalogDownload /></div>
+        <CatalogDownload />
       </div>
     </main>
   );

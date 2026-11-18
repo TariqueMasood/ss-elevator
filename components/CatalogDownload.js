@@ -37,7 +37,7 @@ export default function CatalogDownload() {
 
   return (
     <>
-      <div className="catalog-download">
+      <div className="catalog-download" data-reveal>
         <p>Need a copy for your records?</p>
         <button className="btn" type="button" onClick={() => {
           setStatus("");

@@ -17,7 +17,7 @@ export default function Footer() {
           <div className="grid" data-reveal>
             <div>
               <h4>{SITE.name}</h4>
-              <p style={{ margin: 0 }}>
+              <p className="footer-tagline">
                 {SITE.tagline}
                 <br />
                 Professional &amp; Excellent in Elevator Spare Parts.

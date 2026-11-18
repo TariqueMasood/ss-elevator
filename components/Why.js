@@ -7,7 +7,7 @@ export default function Why() {
         <h2 data-reveal>Why SS Elevator</h2>
         <p className="sub" data-reveal>Your trusted partner for elevator components.</p>
         <div className="grid">{S.map(([t, d]) => <div className="card" data-reveal key={t}><h3>{t}</h3><p>{d}</p></div>)}</div>
-        <div className="grid" style={{ marginTop: 28 }}>{N.map(([n, l]) => <div className="card stat" data-reveal key={l}><b>{n}</b><p>{l}</p></div>)}</div>
+        <div className="grid stats-grid">{N.map(([n, l]) => <div className="card stat" data-reveal key={l}><b>{n}</b><p>{l}</p></div>)}</div>
       </div>
     </section>
   );

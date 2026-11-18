@@ -22,8 +22,17 @@ export default function Header() {
           />
           <span>ELEVATOR</span>
         </Link>
-        <button className="burger" aria-label="Menu" onClick={() => setOpen(!open)}>{open ? "✕" : "☰"}</button>
-        <nav className={"links" + (open ? " open" : "")}>
+        <button
+          className="burger"
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="primary-navigation"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? "✕" : "☰"}
+        </button>
+        <nav id="primary-navigation" className={"links" + (open ? " open" : "")}>
           {LINKS.map(([n, h]) => <Link key={n} href={h} onClick={() => setOpen(false)}>{n}</Link>)}
           <Link className="btn" href="/catalog" onClick={() => setOpen(false)}>PDF Catalog</Link>
           <a className="btn whatsapp" href={wa()} target="_blank" rel="noopener">WhatsApp</a>

@@ -25,32 +25,31 @@ export default async function ProductPage({ params }) {
         <p className="crumb" data-reveal><Link href="/">Home</Link> / <Link href="/#products">Products</Link> / {p.category}</p>
         <div className="two dtop" data-reveal>
           <Gallery images={p.images} name={p.name} />
-          <div>
+          <div className="product-summary card">
             <h2>{p.name}</h2>
-            <span className="tag" style={{ marginTop: 0 }}>{p.code}</span>
-            <p style={{ margin: "16px 0 0" }}>{p.description}</p>
+            <span className="tag product-code">{p.code}</span>
+            <p className="product-description">{p.description}</p>
           </div>
         </div>
-        <div style={{ height: 24 }} />
         {p.specs.length > 0 && (
           <>
-            <h3 data-reveal>Specifications</h3>
+            <h3 className="product-section-title product-specs-title" data-reveal>Specifications</h3>
             <div className="tw" data-reveal><table><tbody>{p.specs.map(([k, v]) => <tr key={k}><th>{k}</th><td>{v}</td></tr>)}</tbody></table></div>
           </>
         )}
         {p.table && (
           <>
-            <h3 style={{ marginTop: 28 }} data-reveal>Models &amp; Data</h3>
+            <h3 className="product-section-title" data-reveal>Models &amp; Data</h3>
             <div className="tw" data-reveal><table>
               <thead><tr>{p.table.h.map((h) => <th key={h}>{h}</th>)}</tr></thead>
               <tbody>{p.table.r.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>
             </table></div>
           </>
         )}
-        <p style={{ marginTop: 28 }} data-reveal><Link className="btn" href="/#products">← Back to products</Link></p>
+        <p className="product-back-link" data-reveal><Link className="btn" href="/#products">← Back to products</Link></p>
         {related.length > 0 && (
           <>
-            <h3 style={{ marginTop: 36 }} data-reveal>Related products</h3>
+            <h3 className="product-section-title product-related-title" data-reveal>Related products</h3>
             <div className="grid">{related.map((r) => <ProductCard key={r.slug} p={r} more={false} />)}</div>
           </>
         )}
