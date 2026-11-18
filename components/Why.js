@@ -4,10 +4,10 @@ export default function Why() {
   return (
     <section id="why">
       <div className="w">
-        <h2>Why SS Elevator</h2>
-        <p className="sub">Your trusted partner for elevator components.</p>
-        <div className="grid">{S.map(([t, d]) => <div className="card" key={t}><h3>{t}</h3><p>{d}</p></div>)}</div>
-        <div className="grid" style={{ marginTop: 28 }}>{N.map(([n, l]) => <div className="card stat" key={l}><b>{n}</b><p>{l}</p></div>)}</div>
+        <h2 data-reveal>Why SS Elevator</h2>
+        <p className="sub" data-reveal>Your trusted partner for elevator components.</p>
+        <div className="grid">{S.map(([t, d]) => <div className="card" data-reveal key={t}><h3>{t}</h3><p>{d}</p></div>)}</div>
+        <div className="grid" style={{ marginTop: 28 }}>{N.map(([n, l]) => <div className="card stat" data-reveal key={l}><b>{n}</b><p>{l}</p></div>)}</div>
       </div>
     </section>
   );

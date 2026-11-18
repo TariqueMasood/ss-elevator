@@ -13,13 +13,13 @@ export default function ProductList() {
   return (
     <section className="alt" id="products">
       <div className="w">
-        <h2>Our Products</h2>
-        <p className="sub">Click any product to see its full details.</p>
-        <input className="search" placeholder="Search products or codes…" value={q} onChange={(e) => setQ(e.target.value)} />
-        <div className="tabs">
+        <h2 data-reveal>Our Products</h2>
+        <p className="sub" data-reveal>Click any product to see its full details.</p>
+        <input className="search" data-reveal placeholder="Search products or codes…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <div className="tabs" data-reveal>
           {["All", ...categories].map((n) => <button key={n} className={"tab" + (cat === n ? " on" : "")} onClick={() => setCat(n)}>{n}</button>)}
         </div>
-        <div className="grid">{items.map((p) => <ProductCard key={p.slug} p={p} />)}</div>
+        <div className="grid" data-reveal>{items.map((p) => <ProductCard key={p.slug} p={p} />)}</div>
         {items.length === 0 && <p>No products match your search.</p>}
       </div>
     </section>

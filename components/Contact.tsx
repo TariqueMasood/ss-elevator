@@ -129,7 +129,7 @@ export default function Contact() {
   return (
     <section className="alt" id="contact">
       <div className="w two">
-        <div>
+        <div data-reveal>
           <h2>Get in Touch</h2>
           <p className="sub">
             Send us your enquiry and our team will be in touch.
@@ -144,7 +144,7 @@ export default function Contact() {
             <b>Address:</b> {SITE.address}
           </p>
         </div>
-        <div className="card">
+        <div className="card" data-reveal>
           <form className="contact-form" noValidate onSubmit={submit}>
             <div className="contact-field">
               <label htmlFor="contact-name">Name</label>

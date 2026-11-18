@@ -13,7 +13,7 @@ export default function Footer() {
     <>
       <footer>
         <div className="w">
-          <div className="grid">
+          <div className="grid" data-reveal>
             <div>
               <h4>{SITE.name}</h4>
               <p style={{ margin: 0 }}>
@@ -47,7 +47,7 @@ export default function Footer() {
               <span>{SITE.address}</span>
             </div>
           </div>
-          <div className="copy">
+          <div className="copy" data-reveal>
             © {new Date().getFullYear()} SS Elevator Component Intl., Trader.
             All rights reserved.
           </div>

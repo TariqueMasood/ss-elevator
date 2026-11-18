@@ -22,8 +22,8 @@ export default async function ProductPage({ params }) {
   return (
     <section>
       <div className="w">
-        <p className="crumb"><Link href="/">Home</Link> / <Link href="/#products">Products</Link> / {p.category}</p>
-        <div className="two dtop">
+        <p className="crumb" data-reveal><Link href="/">Home</Link> / <Link href="/#products">Products</Link> / {p.category}</p>
+        <div className="two dtop" data-reveal>
           <Gallery images={p.images} name={p.name} />
           <div>
             <h2>{p.name}</h2>
@@ -34,23 +34,23 @@ export default async function ProductPage({ params }) {
         <div style={{ height: 24 }} />
         {p.specs.length > 0 && (
           <>
-            <h3>Specifications</h3>
-            <div className="tw"><table><tbody>{p.specs.map(([k, v]) => <tr key={k}><th>{k}</th><td>{v}</td></tr>)}</tbody></table></div>
+            <h3 data-reveal>Specifications</h3>
+            <div className="tw" data-reveal><table><tbody>{p.specs.map(([k, v]) => <tr key={k}><th>{k}</th><td>{v}</td></tr>)}</tbody></table></div>
           </>
         )}
         {p.table && (
           <>
-            <h3 style={{ marginTop: 28 }}>Models &amp; Data</h3>
-            <div className="tw"><table>
+            <h3 style={{ marginTop: 28 }} data-reveal>Models &amp; Data</h3>
+            <div className="tw" data-reveal><table>
               <thead><tr>{p.table.h.map((h) => <th key={h}>{h}</th>)}</tr></thead>
               <tbody>{p.table.r.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>
             </table></div>
           </>
         )}
-        <p style={{ marginTop: 28 }}><Link className="btn" href="/#products">← Back to products</Link></p>
+        <p style={{ marginTop: 28 }} data-reveal><Link className="btn" href="/#products">← Back to products</Link></p>
         {related.length > 0 && (
           <>
-            <h3 style={{ marginTop: 36 }}>Related products</h3>
+            <h3 style={{ marginTop: 36 }} data-reveal>Related products</h3>
             <div className="grid">{related.map((r) => <ProductCard key={r.slug} p={r} more={false} />)}</div>
           </>
         )}
