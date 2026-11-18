@@ -22,7 +22,6 @@ const INITIAL_FORM: ContactForm = {
   message: "",
 };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MIN_MESSAGE_LENGTH = 10;
 
 function isCustomerType(value: string): value is CustomerType {
   return CUSTOMER_TYPES.some((customerType) => customerType === value);
@@ -43,9 +42,7 @@ function validateForm(form: ContactForm): FormErrors {
   if (!isCustomerType(form.customerType)) {
     errors.customerType = "Please select a customer type.";
   }
-  if (message.length < MIN_MESSAGE_LENGTH) {
-    errors.message = `Please enter at least ${MIN_MESSAGE_LENGTH} characters.`;
-  }
+  if (!message) errors.message = "Please enter your message.";
   return errors;
 }
 
@@ -55,6 +52,18 @@ function isApiError(value: unknown): value is { error: string } {
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
+  );
+}
+
+function isApiSuccess(
+  value: unknown,
+): value is { success: true; message?: string } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "success" in value &&
+    value.success === true &&
+    (!("message" in value) || typeof value.message === "string")
   );
 }
 
@@ -82,7 +91,13 @@ export default function Contact() {
     const nextErrors = validateForm(form);
     setErrors(nextErrors);
     setStatus(null);
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0) {
+      setStatus({
+        type: "error",
+        message: "Please correct the highlighted fields before submitting.",
+      });
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -106,20 +121,28 @@ export default function Contact() {
         );
       }
 
+      if (!isApiSuccess(result)) {
+        throw new Error(
+          "We could not confirm that your enquiry was submitted. Please try again.",
+        );
+      }
+
       setForm(INITIAL_FORM);
       setErrors({});
       setStatus({
         type: "success",
-        message:
-          "Thank you for contacting us. Your enquiry has been submitted successfully. Our team will get back to you shortly.",
+        message: result.message
+          ?? "Your enquiry was sent successfully. Our team will get back to you shortly.",
       });
     } catch (error) {
       setStatus({
         type: "error",
         message:
-          error instanceof Error
-            ? error.message
-            : "We could not submit your enquiry. Please try again.",
+          error instanceof TypeError
+            ? "We could not connect to the server. Check your internet connection and try again."
+            : error instanceof Error
+              ? error.message
+              : "We could not submit your enquiry. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -252,13 +275,22 @@ export default function Contact() {
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
             {status && (
-              <p
+              <div
                 className={`contact-status ${status.type}`}
                 role={status.type === "error" ? "alert" : "status"}
-                aria-live="polite"
+                aria-live={status.type === "error" ? "assertive" : "polite"}
+                aria-atomic="true"
               >
-                {status.message}
-              </p>
+                <span className="contact-status-message">{status.message}</span>
+                <button
+                  className="contact-status-close"
+                  type="button"
+                  aria-label="Dismiss contact form notification"
+                  onClick={() => setStatus(null)}
+                >
+                  ×
+                </button>
+              </div>
             )}
           </form>
         </div>

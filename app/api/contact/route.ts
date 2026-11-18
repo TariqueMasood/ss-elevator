@@ -11,7 +11,6 @@ export const runtime = "nodejs";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CUSTOMER_TYPES = ["Customer", "Supplier", "Career"] as const;
 type CustomerType = (typeof CUSTOMER_TYPES)[number];
-const MIN_MESSAGE_LENGTH = 10;
 
 function isCustomerType(value: unknown): value is CustomerType {
   return (
@@ -56,7 +55,7 @@ export async function POST(request: Request) {
     !EMAIL_PATTERN.test(email) ||
     email.length > 254 ||
     !isCustomerType(customerType) ||
-    message.length < MIN_MESSAGE_LENGTH ||
+    !message ||
     message.length > 4000
   ) {
     return NextResponse.json(
@@ -88,5 +87,22 @@ export async function POST(request: Request) {
     }
   });
 
-  return NextResponse.json({ success: true });
+  const [ownerNotification, customerAcknowledgement] = results;
+  if (ownerNotification.status === "rejected") {
+    return NextResponse.json(
+      {
+        error:
+          "We could not deliver your enquiry to our team. Please try again or contact us by phone or email.",
+      },
+      { status: 502 },
+    );
+  }
+
+  return NextResponse.json({
+    success: true,
+    message:
+      customerAcknowledgement.status === "rejected"
+        ? "Your enquiry reached our team, but we could not send a confirmation email. Our team will get back to you shortly."
+        : "Your enquiry was sent successfully. Our team will get back to you shortly.",
+  });
 }

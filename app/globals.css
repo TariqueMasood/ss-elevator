@@ -64,6 +64,10 @@
   --overlay: #0d1b2ab8;
   --danger: #b42318;
   --success: #276749;
+  --success-surface: #edf7f0;
+  --success-border: #b7d8c0;
+  --error-surface: #fff3f1;
+  --error-border: #efc0ba;
   --footer-background: var(--hero-start);
   --footer-text: #d8e1e9;
   --footer-link: #b8c7d4;
@@ -396,6 +400,10 @@ section:not(.hero) h2::after {
   gap: var(--space-2);
   font-weight: var(--weight-normal);
 }
+.catalog-modal .catalog-consent input[aria-invalid="true"] {
+  outline: 2px solid var(--danger);
+  outline-offset: 2px;
+}
 .catalog-consent input {
   width: auto;
   margin-top: var(--space-1);
@@ -410,12 +418,6 @@ section:not(.hero) h2::after {
   width: 1px;
   height: 1px;
   overflow: hidden;
-}
-.catalog-status {
-  min-height: 1.5em;
-  margin: 0;
-  color: var(--pri);
-  font-size: var(--text-sm);
 }
 .grid {
   display: grid;
@@ -839,14 +841,49 @@ form {
   font-size: var(--text-xs);
 }
 .contact-status {
-  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: var(--radius-control);
   font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--line-height-body);
+}
+.contact-status-message {
+  flex: 1;
+}
+.contact-status-close {
+  flex: 0 0 auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.contact-status-close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 .contact-status.success {
   color: var(--success);
+  border-color: var(--success-border);
+  border-left-color: var(--success);
+  background: var(--success-surface);
 }
 .contact-status.error {
   color: var(--danger);
+  border-color: var(--error-border);
+  border-left-color: var(--danger);
+  background: var(--error-surface);
 }
 footer {
   background: var(--footer-background);
