@@ -19,6 +19,10 @@ const manrope = Manrope({
 export const metadata = {
   title: "SS Elevator – Component Intl., Trading",
   description: "Professional & Excellent in Elevator Spare Parts. Safety components, car frame parts, buffers, rubber, brackets and more across the Middle East.",
+  icons: {
+    icon: "/ss-elevator-logo.jpg",
+    apple: "/ss-elevator-logo.jpg",
+  },
 };
 
 export const viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
