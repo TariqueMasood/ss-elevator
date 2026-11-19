@@ -140,63 +140,230 @@ function escapeHtml(value: string): string {
   });
 }
 
+// ─── Design tokens (mirrors globals.css) ───────────────────────────────────
+// Email clients cannot use CSS variables, so values are inlined here.
+// Update these whenever the app palette changes.
+const E = {
+  // Surfaces
+  pageBg:    "#f4f5fb",   // --color-bg
+  altBg:     "#ecedf7",   // --color-bg-alt
+  cardBg:    "#ffffff",   // --color-surface
+
+  // Primary navy
+  pri:       "#1e1b5e",   // --color-primary
+  priMid:    "#2d2882",   // --color-primary-mid
+  priLight:  "#3d35b5",   // --color-primary-light
+  priPale:   "#ebebf8",   // --color-primary-pale
+
+  // Accent gold
+  acc:       "#d4891a",   // --color-accent
+  accLight:  "#e9a84c",   // --color-accent-light
+  accBright: "#f5c272",   // --color-accent-bright
+  accPale:   "#fef5e7",   // --color-accent-pale
+
+  // Text
+  text:      "#16143d",   // --color-text
+  muted:     "#56537a",   // --color-text-muted
+  faint:     "#9693b8",   // --color-text-faint
+  onPri:     "#ffffff",   // --on-primary
+  onAcc:     "#1a1540",   // --on-accent
+
+  // Hero (header band)
+  heroStart: "#0d0b35",   // --hero-start
+  heroMid:   "#1e1b5e",   // --hero-middle
+  heroText:  "#dddaf5",   // --hero-text
+
+  // Footer band
+  footerText: "#ccc9ec",  // --footer-text
+  footerLink: "#a8a4d8",  // --footer-link
+  footerMut:  "#7a76aa",  // --footer-muted
+
+  // Borders
+  border:    "#d8d6ef",   // --color-border
+};
+
 function emailShell(preheader: string, content: string): string {
+  const year = new Date().getFullYear();
   return `<!doctype html>
-<html lang="en">
-  <body style="margin:0;padding:0;background:#f3f6f7;font-family:Arial,Helvetica,sans-serif;color:#1c2d36;">
-    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(preheader)}</div>
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f6f7;padding:32px 12px;">
-      <tr><td align="center">
-        <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;">
-          <tr><td style="padding:24px 32px;background:#123b4a;color:#ffffff;">
-            <div style="font-size:12px;letter-spacing:2px;font-weight:bold;color:#f0b547;">${escapeHtml(SITE.name)}</div>
-            <div style="font-size:14px;margin-top:5px;color:#e2edef;">${escapeHtml(SITE.tagline)}</div>
-          </td></tr>
-          <tr><td style="padding:32px;">${content}</td></tr>
-          <tr><td style="padding:20px 32px;background:#f3f7f5;color:#61717a;font-size:12px;line-height:1.6;">
-            ${escapeHtml(SITE.name)} · ${escapeHtml(SITE.tagline)}<br>
-            <a href="mailto:${escapeHtml(SITE.email)}" style="color:#123b4a;">${escapeHtml(SITE.email)}</a>
-          </td></tr>
-        </table>
-      </td></tr>
-    </table>
-  </body>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>${escapeHtml(SITE.name)}</title>
+  <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+</head>
+<body style="margin:0;padding:0;background:${E.pageBg};font-family:Arial,Helvetica,sans-serif;color:${E.text};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+
+  <!-- Preheader (hidden preview text) -->
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+
+  <!-- Outer wrapper -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+         style="background:${E.pageBg};padding:40px 16px;">
+    <tr><td align="center">
+
+      <!-- Card shell: max 600px -->
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0"
+             style="width:100%;max-width:600px;background:${E.cardBg};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(14,12,50,0.12);">
+
+        <!-- ── Header band ───────────────────────────────── -->
+        <tr>
+          <td style="padding:0;background:linear-gradient(135deg,${E.heroStart} 0%,${E.heroMid} 100%);">
+            <!--[if mso]><table role="presentation" width="100%"><tr><td style="padding:28px 36px;background:${E.heroMid};"><!
+            [endif]-->
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td style="padding:28px 36px;">
+                  <!-- Brand name -->
+                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:${E.accBright};">${escapeHtml(SITE.name)}</div>
+                  <!-- Tagline -->
+                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;margin-top:4px;color:${E.heroText};opacity:0.85;">${escapeHtml(SITE.tagline)}</div>
+                </td>
+                <!-- Decorative gold accent bar on right -->
+                <td width="6" style="background:linear-gradient(180deg,${E.accBright} 0%,${E.acc} 100%);width:6px;min-width:6px;"></td>
+              </tr>
+            </table>
+            <!--[if mso]></td></tr></table><![endif]-->
+          </td>
+        </tr>
+
+        <!-- ── Thin gold divider line ────────────────────── -->
+        <tr>
+          <td height="3" style="background:linear-gradient(90deg,${E.priLight},${E.accLight});height:3px;font-size:0;line-height:0;">&nbsp;</td>
+        </tr>
+
+        <!-- ── Body content ──────────────────────────────── -->
+        <tr>
+          <td style="padding:40px 36px;background:${E.cardBg};">
+            ${content}
+          </td>
+        </tr>
+
+        <!-- ── Footer band ───────────────────────────────── -->
+        <tr>
+          <td style="padding:24px 36px;background:${E.altBg};border-top:1px solid ${E.border};">
+            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:${E.pri};letter-spacing:0.5px;">
+              ${escapeHtml(SITE.name)} &nbsp;·&nbsp; ${escapeHtml(SITE.tagline)}
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:${E.muted};line-height:1.6;">
+              <a href="mailto:${escapeHtml(SITE.email)}" style="color:${E.priLight};text-decoration:none;">${escapeHtml(SITE.email)}</a>
+              &nbsp;&nbsp;·&nbsp;&nbsp;
+              <span style="color:${E.faint};">© ${year} ${escapeHtml(SITE.name)}. All rights reserved.</span>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+      <!-- /Card shell -->
+
+    </td></tr>
+  </table>
+  <!-- /Outer wrapper -->
+
+</body>
 </html>`;
 }
 
 function emailTable(fields: Array<[string, string, boolean]>): string {
   const rows = fields
     .map(([label, value, highlighted]) => {
-      const background = highlighted ? "#fff5dc" : "#ffffff";
-      const weight = highlighted ? "bold" : "normal";
-      return `<tr style="background:${background};">
-        <th align="left" style="width:34%;padding:11px 12px;border:1px solid #d9e3e3;font-size:13px;color:#123b4a;">${escapeHtml(label)}</th>
-        <td style="padding:11px 12px;border:1px solid #d9e3e3;font-size:13px;line-height:1.5;font-weight:${weight};word-break:break-word;white-space:pre-wrap;">${escapeHtml(value || NOT_AVAILABLE)}</td>
+      const rowBg   = highlighted ? E.accPale  : E.cardBg;
+      const labelCl = highlighted ? E.pri      : E.muted;
+      const weight  = highlighted ? "bold"     : "normal";
+      const valueCl = highlighted ? E.text     : E.text;
+      return `<tr style="background:${rowBg};">
+        <th align="left"
+            style="width:34%;padding:12px 14px;border:1px solid ${E.border};
+                   font-family:Arial,Helvetica,sans-serif;font-size:12px;
+                   font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;
+                   color:${labelCl};white-space:nowrap;">
+          ${escapeHtml(label)}
+        </th>
+        <td style="padding:12px 14px;border:1px solid ${E.border};
+                   font-family:Arial,Helvetica,sans-serif;font-size:13px;
+                   line-height:1.6;font-weight:${weight};color:${valueCl};
+                   word-break:break-word;white-space:pre-wrap;">
+          ${escapeHtml(value || NOT_AVAILABLE)}
+        </td>
       </tr>`;
     })
     .join("");
 
-  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">${rows}</table>`;
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+          style="width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;
+                 border:1px solid ${E.border};">
+    ${rows}
+  </table>`;
+}
+
+// Reusable CTA button — gold gradient, pill shape, matches app .btn style
+function emailButton(href: string, label: string): string {
+  return `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:28px 0;">
+    <tr>
+      <td align="center"
+          style="background:linear-gradient(145deg,${E.accLight},${E.acc});
+                 border-radius:10px;
+                 box-shadow:0 4px 16px rgba(212,137,26,0.35);">
+        <a href="${href}"
+           style="display:inline-block;padding:14px 32px;
+                  font-family:Arial,Helvetica,sans-serif;font-size:15px;
+                  font-weight:bold;letter-spacing:0.3px;
+                  color:${E.onAcc};text-decoration:none;">
+          ${escapeHtml(label)}
+        </a>
+      </td>
+    </tr>
+  </table>`;
+}
+
+// Section heading used inside email body — matches app h2 style
+function emailHeading(text: string): string {
+  return `<h1 style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;
+                     font-size:24px;line-height:1.2;font-weight:bold;
+                     letter-spacing:-0.5px;color:${E.pri};">
+    ${escapeHtml(text)}
+  </h1>`;
+}
+
+function emailH2(text: string): string {
+  return `<h2 style="margin:28px 0 12px;font-family:Arial,Helvetica,sans-serif;
+                     font-size:16px;line-height:1.3;font-weight:bold;
+                     color:${E.pri};border-bottom:2px solid ${E.accLight};
+                     padding-bottom:8px;">
+    ${escapeHtml(text)}
+  </h2>`;
+}
+
+function emailBody(html: string): string {
+  return `<p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;
+                    font-size:15px;line-height:1.72;color:${E.text};">
+    ${html}
+  </p>`;
+}
+
+function emailMuted(html: string): string {
+  return `<p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;
+                    font-size:13px;line-height:1.6;color:${E.muted};">
+    ${html}
+  </p>`;
 }
 
 function userDownloadHtml(name: string, downloadUrl: string): string {
   const safeName = escapeHtml(name);
-  const safeUrl = escapeHtml(downloadUrl);
-  const year = new Date().getFullYear();
+  const safeUrl  = escapeHtml(downloadUrl);
   return emailShell(
     "Your requested SS Elevator catalog is ready to download.",
-    `<h1 style="margin:0 0 18px;font-size:26px;line-height:1.25;color:#123b4a;">Your catalog is ready</h1>
-     <p style="font-size:16px;line-height:1.7;margin:0 0 14px;">Hello ${safeName},</p>
-     <p style="font-size:16px;line-height:1.7;margin:0 0 24px;">Thank you for downloading the SS Elevator components catalog. The requested file is ready.</p>
-     <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 22px;">
-       <tr><td align="center" bgcolor="#e4a52e" style="border-radius:24px;">
-         <a href="${safeUrl}" style="display:inline-block;padding:14px 26px;color:#123b4a;text-decoration:none;font-weight:bold;font-size:15px;">Download File</a>
-       </td></tr>
-     </table>
-     <p style="font-size:13px;line-height:1.6;color:#61717a;margin:0 0 6px;">If the button does not work, copy and paste this link:</p>
-     <p style="font-size:13px;line-height:1.6;word-break:break-all;margin:0 0 24px;"><a href="${safeUrl}" style="color:#123b4a;">${safeUrl}</a></p>
-     <p style="font-size:14px;line-height:1.7;margin:0 0 18px;">Need help? Contact us at <a href="mailto:${escapeHtml(SITE.email)}" style="color:#123b4a;">${escapeHtml(SITE.email)}</a>.</p>
-     <p style="font-size:12px;color:#61717a;margin:0;">© ${year} ${escapeHtml(SITE.name)}. All rights reserved.</p>`,
+    `${emailHeading("Your catalog is ready")}
+     ${emailBody(`Hello ${safeName},`)}
+     ${emailBody("Thank you for downloading the SS Elevator components catalog. Your requested file is ready — click the button below to access it.")}
+     ${emailButton(safeUrl, "Download Catalog")}
+     ${emailMuted(`If the button does not work, copy and paste this link into your browser:`)}
+     <p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:12px;
+               line-height:1.6;word-break:break-all;color:${E.priLight};">
+       <a href="${safeUrl}" style="color:${E.priLight};text-decoration:underline;">${safeUrl}</a>
+     </p>
+     ${emailMuted(`Need help? Reply to this email or contact us at <a href="mailto:${escapeHtml(SITE.email)}" style="color:${E.priLight};text-decoration:none;">${escapeHtml(SITE.email)}</a>.`)}`,
   );
 }
 
@@ -205,19 +372,27 @@ function ownerNotificationHtml(
   details: DownloadRequestDetails,
 ): string {
   const fields: Array<[string, string, boolean]> = [
-    ["User Name", lead.name, true],
-    ["User Email", lead.email, true],
-    ["Company Name", lead.company || NOT_AVAILABLE, true],
-    ["Date & Time (UTC)", formatRequestedAt(details.requestedAt), false],
-    ["Device Type", details.deviceType, false],
-    ["Requested Download URL", details.downloadUrl, false],
-    ["Request ID", details.requestId, false],
+    ["User Name",             lead.name,                           true],
+    ["User Email",            lead.email,                          true],
+    ["Company Name",          lead.company || NOT_AVAILABLE,       true],
+    ["Date & Time (UTC)",     formatRequestedAt(details.requestedAt), false],
+    ["Device Type",           details.deviceType,                  false],
+    ["Download URL",          details.downloadUrl,                 false],
+    ["Request ID",            details.requestId,                   false],
   ];
 
   return emailShell(
     `New catalog download request from ${lead.name}.`,
-    `<h1 style="margin:0 0 8px;font-size:23px;line-height:1.3;color:#123b4a;">New Download Request Received</h1>
-     <p style="font-size:14px;line-height:1.6;color:#61717a;margin:0 0 20px;">A visitor requested the SS Elevator components catalog.</p>
+    `<!-- Alert badge -->
+     <div style="display:inline-block;margin:0 0 20px;padding:6px 14px;
+                 background:${E.priPale};border-radius:999px;
+                 font-family:Arial,Helvetica,sans-serif;font-size:11px;
+                 font-weight:bold;letter-spacing:1px;text-transform:uppercase;
+                 color:${E.priLight};">
+       📥 &nbsp;New Download Request
+     </div>
+     ${emailHeading("Catalog Download Received")}
+     ${emailMuted("A visitor has requested the SS Elevator components catalog. Their details are below.")}
      ${emailTable(fields)}`,
   );
 }
@@ -227,39 +402,47 @@ function ownerContactHtml(
   metadata: RequestMetadata,
 ): string {
   const fields: Array<[string, string, boolean]> = [
-    ["Name", submission.name, true],
-    ["Email", submission.email, true],
-    ["Customer Type", submission.customerType, true],
-    ["Message", submission.message, false],
+    ["Name",             submission.name,          true],
+    ["Email",            submission.email,          true],
+    ["Customer Type",    submission.customerType,   true],
+    ["Message",          submission.message,        false],
     ["Date & Time (UTC)", formatRequestedAt(metadata.requestedAt), false],
-    ["Device Type", metadata.deviceType, false],
-    ["Request ID", metadata.requestId, false],
+    ["Device Type",      metadata.deviceType,       false],
+    ["Request ID",       metadata.requestId,        false],
   ];
 
   return emailShell(
     `New website enquiry from ${submission.name}.`,
-    `<p style="margin:0 0 20px;font-size:18px;line-height:1.5;font-weight:bold;color:#123b4a;">📩 A new enquiry has been submitted through the website.</p>
+    `<!-- Alert badge -->
+     <div style="display:inline-block;margin:0 0 20px;padding:6px 14px;
+                 background:${E.priPale};border-radius:999px;
+                 font-family:Arial,Helvetica,sans-serif;font-size:11px;
+                 font-weight:bold;letter-spacing:1px;text-transform:uppercase;
+                 color:${E.priLight};">
+       📩 &nbsp;New Contact Enquiry
+     </div>
+     ${emailHeading("New Enquiry via Website")}
+     ${emailMuted("Someone submitted the contact form. Their message and details are below.")}
      ${emailTable(fields)}`,
   );
 }
 
 function customerAcknowledgementHtml(submission: ContactSubmission): string {
   const summaryFields: Array<[string, string, boolean]> = [
-    ["Name", submission.name, false],
-    ["Email", submission.email, false],
-    ["Customer Type", submission.customerType, false],
-    ["Message", submission.message, false],
+    ["Name",          submission.name,          false],
+    ["Email",         submission.email,          false],
+    ["Customer Type", submission.customerType,   false],
+    ["Message",       submission.message,        false],
   ];
 
   return emailShell(
     "We have received your enquiry.",
-    `<h1 style="margin:0 0 18px;font-size:25px;line-height:1.25;color:#123b4a;">We've received your message</h1>
-     <p style="font-size:16px;line-height:1.7;margin:0 0 14px;">Hello ${escapeHtml(submission.name)},</p>
-     <p style="font-size:15px;line-height:1.7;margin:0 0 12px;">Thank you for contacting ${escapeHtml(SITE.name)}. Your enquiry has been received successfully.</p>
-     <p style="font-size:15px;line-height:1.7;margin:0 0 22px;">Our team will review your message and get back to you shortly.</p>
-     <h2 style="margin:0 0 12px;font-size:17px;color:#123b4a;">Your enquiry summary</h2>
+    `${emailHeading("We've received your message")}
+     ${emailBody(`Hello ${escapeHtml(submission.name)},`)}
+     ${emailBody(`Thank you for contacting ${escapeHtml(SITE.name)}. Your enquiry has been received and our team will get back to you shortly.`)}
+     ${emailH2("Your enquiry summary")}
      ${emailTable(summaryFields)}
-     <p style="font-size:13px;line-height:1.6;color:#61717a;margin:22px 0 0;">Support Team · © ${new Date().getFullYear()} ${escapeHtml(SITE.name)}</p>`,
+     ${emailMuted("If you have any additional questions in the meantime, simply reply to this email.")}`,
   );
 }
 

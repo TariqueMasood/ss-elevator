@@ -1,4 +1,4 @@
-import { Inter, Manrope } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Contact from "@/components/Contact";
@@ -6,15 +6,18 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import { SITE } from "@/lib/config";
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-jakarta",
+  weight: ["500", "600", "700", "800"],
 });
-const manrope = Manrope({
+
+const dmSans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-manrope",
+  variable: "--font-dm",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata = {
@@ -46,7 +49,7 @@ export const viewport = { width: "device-width", initialScale: 1, viewportFit: "
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${dmSans.variable}`}>
       <body>
         <ScrollReveal />
         <Header />
