@@ -29,7 +29,11 @@ interface SmtpConfig {
 }
 
 const NOT_AVAILABLE = "Not Available";
-let transporter: Transporter | undefined;
+
+/** Cached SMTP client and the config it was built from, kept in sync. */
+let cachedTransporter:
+  | { client: Transporter; config: SmtpConfig }
+  | undefined;
 
 function formatRequestedAt(value: string): string {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -73,23 +77,54 @@ function smtpConfig(): SmtpConfig {
 }
 
 function getTransporter(): { client: Transporter; config: SmtpConfig } {
+  if (cachedTransporter) return cachedTransporter;
+
   const config = smtpConfig();
-  if (!transporter) {
-    transporter = nodemailer.createTransport({
-      host: config.host,
-      port: config.port,
-      secure: config.port === 465,
-      requireTLS: config.port !== 465,
-      auth: {
-        user: config.username,
-        pass: config.password,
-      },
-      connectionTimeout: 10_000,
-      greetingTimeout: 10_000,
-      socketTimeout: 15_000,
-    });
+  const client = nodemailer.createTransport({
+    host: config.host,
+    port: config.port,
+    secure: config.port === 465,
+    requireTLS: config.port !== 465,
+    auth: {
+      user: config.username,
+      pass: config.password,
+    },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  });
+
+  cachedTransporter = { client, config };
+  return cachedTransporter;
+}
+
+/**
+ * Verifies the SMTP connection using the configured credentials.
+ * Call this once at server startup (e.g. in a Next.js instrumentation hook)
+ * to surface misconfiguration in logs before any user request hits the email path.
+ *
+ * Example — create `instrumentation.ts` in the project root:
+ *
+ *   export async function register() {
+ *     if (process.env.NEXT_RUNTIME === "nodejs") {
+ *       const { verifySmtpConnection } = await import("@/lib/email");
+ *       await verifySmtpConnection();
+ *     }
+ *   }
+ */
+export async function verifySmtpConnection(): Promise<void> {
+  try {
+    const { client } = getTransporter();
+    await client.verify();
+    console.log("[email] SMTP connection verified successfully.");
+  } catch (error) {
+    // Log the error clearly but don't crash the process — the app can still
+    // serve pages; only form submissions will fail until SMTP is fixed.
+    console.error(
+      "[email] SMTP connection verification failed. Check SMTP_HOST, SMTP_PORT, SMTP_USERNAME and SMTP_PASSWORD in your environment.",
+      error,
+    );
   }
-  return { client: transporter, config };
 }
 
 function escapeHtml(value: string): string {
