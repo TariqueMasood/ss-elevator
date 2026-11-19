@@ -273,6 +273,8 @@ header {
 }
 .links a.btn {
   margin-left: var(--space-2);
+  padding: 0.5rem var(--space-4);
+  font-size: var(--text-xs);
 }
 .burger {
   display: none;

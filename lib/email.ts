@@ -274,15 +274,16 @@ function emailTable(fields: Array<[string, string, boolean]>): string {
       const valueCl = highlighted ? E.text     : E.text;
       return `<tr style="background:${rowBg};">
         <th align="left"
-            style="width:34%;padding:12px 14px;border:1px solid ${E.border};
+            style="width:34%;padding:8px 12px;border:1px solid ${E.border};
                    font-family:Arial,Helvetica,sans-serif;font-size:12px;
+                   line-height:1.4;
                    font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;
                    color:${labelCl};white-space:nowrap;">
           ${escapeHtml(label)}
         </th>
-        <td style="padding:12px 14px;border:1px solid ${E.border};
+        <td style="padding:8px 12px;border:1px solid ${E.border};
                    font-family:Arial,Helvetica,sans-serif;font-size:13px;
-                   line-height:1.6;font-weight:${weight};color:${valueCl};
+                   line-height:1.4;font-weight:${weight};color:${valueCl};
                    word-break:break-word;white-space:pre-wrap;">
           ${escapeHtml(value || NOT_AVAILABLE)}
         </td>

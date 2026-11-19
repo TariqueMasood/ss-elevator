@@ -271,7 +271,7 @@ export default function Contact() {
               )}
             </div>
 
-            <button className="btn whatsapp" type="submit" disabled={isSubmitting}>
+            <button className="btn" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
             {status && (
