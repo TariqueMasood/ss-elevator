@@ -8,7 +8,29 @@ export default function ProductList() {
   const [q, setQ] = useState("");
   const items = useMemo(() => {
     const s = q.trim().toLowerCase();
-    return products.filter((p) => (cat === "All" || p.category === cat) && (!s || `${p.name} ${p.code} ${p.description}`.toLowerCase().includes(s)));
+    return products
+      .filter((p) => cat === "All" || p.category === cat)
+      .flatMap((p) => {
+        if (cat !== "Cable Hanger" || !p.expandTableRows || !p.table) {
+          return [p];
+        }
+
+        return p.table.r.map((row, index) => {
+          const code = row[0];
+          return {
+            ...p,
+            slug: `${p.slug}-${code.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+            href: `/products/${p.slug}#model-${encodeURIComponent(code)}`,
+            name: `${p.name} ${code}`,
+            code,
+            description: row[1],
+            images: [p.images[index] || p.images[p.images.length - 1]],
+          };
+        });
+      })
+      .filter((p) =>
+        !s || `${p.name} ${p.code} ${p.description}`.toLowerCase().includes(s),
+      );
   }, [cat, q]);
   return (
     <section className="alt" id="products">
