@@ -5,8 +5,13 @@ import {
   type ContactSubmission,
 } from "@/lib/email";
 import { collectRequestMetadata } from "@/lib/request-metadata";
+import { createRateLimiter } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+// 5 submissions per IP per 10 minutes — enough for any legitimate user,
+// enough to block naive bots and accidental rapid re-submissions.
+const checkRateLimit = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CUSTOMER_TYPES = ["Customer", "Supplier", "Career"] as const;
@@ -30,6 +35,9 @@ function cleanText(value: unknown, maxLength: number): string {
 }
 
 export async function POST(request: Request) {
+  const limited = checkRateLimit(request);
+  if (limited) return limited;
+
   if (!request.headers.get("content-type")?.includes("application/json")) {
     return NextResponse.json({ error: "Invalid request." }, { status: 415 });
   }
