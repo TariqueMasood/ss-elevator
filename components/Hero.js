@@ -2,6 +2,9 @@ import { wa } from "@/lib/config";
 export default function Hero() {
   return (
     <section className="hero" id="home">
+      <div className="hero-orb hero-orb-1" aria-hidden="true" />
+      <div className="hero-orb hero-orb-2" aria-hidden="true" />
+      <div className="hero-orb hero-orb-3" aria-hidden="true" />
       <div className="w">
         <p className="hero-eyebrow" data-hero-enter="eyebrow">
           Elevator components · Middle East distribution
