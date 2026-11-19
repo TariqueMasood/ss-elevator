@@ -205,7 +205,7 @@ function emailShell(preheader: string, content: string): string {
 
       <!-- Card shell: max 600px -->
       <table role="presentation" cellspacing="0" cellpadding="0" border="0"
-             style="width:100%;max-width:600px;background:${E.cardBg};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(14,12,50,0.12);">
+             style="width:100%;max-width:600px;background:${E.cardBg};border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(14,12,50,0.12);">
 
         <!-- ── Header band ───────────────────────────────── -->
         <tr>
@@ -304,7 +304,7 @@ function emailButton(href: string, label: string): string {
     <tr>
       <td align="center"
           style="background:linear-gradient(145deg,${E.accLight},${E.acc});
-                 border-radius:10px;
+                 border-radius:6px;
                  box-shadow:0 4px 16px rgba(212,137,26,0.35);">
         <a href="${href}"
            style="display:inline-block;padding:14px 32px;

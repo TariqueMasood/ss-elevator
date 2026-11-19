@@ -40,7 +40,21 @@ export default function Footer() {
               <h4>Contact</h4>
               <a href={`tel:+${SITE.phone}`}>{SITE.phoneDisplay}</a>
               <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-              <span>{SITE.address}</span>
+              <address className="footer-address">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
+                  <circle cx="12" cy="10" r="2.5" />
+                </svg>
+                <span>{SITE.address}</span>
+              </address>
             </div>
           </div>
           <div className="copy" data-reveal>
