@@ -664,16 +664,19 @@ section:not(.hero) h2::after {
   font-weight: var(--weight-normal);
 }
 .catalog-modal .catalog-consent {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
   gap: var(--space-2);
   font-weight: var(--weight-normal);
+}
+.catalog-modal .catalog-consent span {
+  line-height: 1.5;
 }
 .catalog-modal .catalog-consent input[aria-invalid="true"] {
   outline: 2px solid var(--danger);
   outline-offset: 2px;
 }
-.catalog-consent input {
+.catalog-modal .catalog-consent input {
   margin-top: 2px;  /* optical vertical alignment with label text */
   accent-color: var(--pri);
 }
