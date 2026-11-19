@@ -42,7 +42,7 @@ export default async function ProductPage({ params }) {
             <h3 className="product-section-title" data-reveal>Models &amp; Data</h3>
             <div className="tw" data-reveal><table>
               <thead><tr>{p.table.h.map((h) => <th key={h}>{h}</th>)}</tr></thead>
-              <tbody>{p.table.r.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>
+              <tbody>{p.table.r.map((row) => <tr key={row[0]}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>)}</tbody>
             </table></div>
           </>
         )}

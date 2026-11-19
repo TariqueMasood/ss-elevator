@@ -1,14 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Traps focus within `containerRef` while the modal is open. */
+function useFocusTrap(containerRef, isActive) {
+  useEffect(() => {
+    if (!isActive || !containerRef.current) return;
+
+    const container = containerRef.current;
+    const FOCUSABLE =
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    // Move focus into the modal on open.
+    const firstFocusable = container.querySelector(FOCUSABLE);
+    firstFocusable?.focus();
+
+    function onKeyDown(event) {
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(container.querySelectorAll(FOCUSABLE));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey) {
+        if (document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [containerRef, isActive]);
+}
 
 export default function CatalogDownload() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
+  const modalRef = useRef(null);
+  const triggerRef = useRef(null);
+
+  useFocusTrap(modalRef, isOpen);
+
+  // Return focus to the trigger button when the modal closes.
+  useEffect(() => {
+    if (!isOpen) {
+      triggerRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  // Close on Escape key (attached to document so the backdrop div doesn't need focus).
+  useEffect(() => {
+    if (!isOpen) return;
+    function onKeyDown(event) {
+      if (event.key === "Escape") setIsOpen(false);
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isOpen]);
 
   async function submitRequest(event) {
     event.preventDefault();
@@ -111,11 +169,16 @@ export default function CatalogDownload() {
     <>
       <div className="catalog-download" data-reveal>
         <p>Need a copy for your records?</p>
-        <button className="btn" type="button" onClick={() => {
-          setStatus(null);
-          setErrors({});
-          setIsOpen(true);
-        }}>
+        <button
+          ref={triggerRef}
+          className="btn"
+          type="button"
+          onClick={() => {
+            setStatus(null);
+            setErrors({});
+            setIsOpen(true);
+          }}
+        >
           Download PDF
         </button>
       </div>
@@ -123,11 +186,13 @@ export default function CatalogDownload() {
       {isOpen && (
         <div
           className="catalog-modal-backdrop"
-          onKeyDown={(event) => {
-            if (event.key === "Escape") setIsOpen(false);
+          onClick={(event) => {
+            // Close when clicking the backdrop itself, not the modal content.
+            if (event.target === event.currentTarget) setIsOpen(false);
           }}
         >
           <section
+            ref={modalRef}
             className="catalog-modal card"
             role="dialog"
             aria-modal="true"

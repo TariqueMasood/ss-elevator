@@ -93,16 +93,6 @@
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.product-summary {
-  align-self: center;
-  padding: var(--space-8);
-}
-.product-summary h2 {
-  margin-bottom: var(--space-3);
-}
-.product-summary .product-description {
-  line-height: 1.75;
-}
 * {
   box-sizing: border-box;
 }
@@ -840,6 +830,31 @@ textarea:focus-visible {
 }
 .crumb a {
   color: var(--pri);
+}
+
+/* ---- Product detail page ---- */
+.product-summary {
+  align-self: center;
+  padding: var(--space-8);
+}
+.product-summary h2 {
+  margin-bottom: var(--space-3);
+}
+.product-summary .product-description {
+  line-height: 1.75;
+}
+
+/* Visually hidden but accessible to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 h3 {
   margin: 0 0 var(--space-2);

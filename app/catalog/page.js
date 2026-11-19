@@ -18,7 +18,16 @@ export default function CatalogPage() {
           <iframe
             src="/ss-elevator-components.pdf#toolbar=0&navpanes=0"
             title="SS Elevator components catalog PDF"
-          />
+          >
+            {/* Shown if the browser cannot render the inline PDF (e.g. iOS Safari, some proxies) */}
+            <p>
+              Your browser cannot display the PDF inline.{" "}
+              <a href="/ss-elevator-components.pdf" download>
+                Download the catalog here
+              </a>
+              .
+            </p>
+          </iframe>
         </div>
         <CatalogDownload />
       </div>
