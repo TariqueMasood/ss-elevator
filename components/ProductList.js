@@ -86,7 +86,7 @@ export default function ProductList() {
             </button>
           ))}
         </div>
-        <div className="grid" data-reveal>
+        <div className="grid">
           {visibleProducts.map((product) => (
             <ProductCard key={product.slug} p={product} />
           ))}
