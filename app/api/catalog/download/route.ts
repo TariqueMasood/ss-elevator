@@ -32,7 +32,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition":
-          'attachment; filename="ss-elevator-components.pdf"',
+          'inline; filename="ss-elevator-components.pdf"',
         "Content-Length": String(pdf.byteLength),
         "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff",

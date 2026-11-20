@@ -27,8 +27,14 @@ local development and deployment:
   `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"`.
 
 The preview pages are public and can be saved individually, but the original
-PDF is not publicly served. Email failures are reported by the request form;
-owner-notification failures are logged.
+PDF is not publicly served. A valid email link opens the original PDF in the
+browser's built-in viewer, where the user can choose to download it. Email
+failures are reported by the request form; owner-notification failures are
+logged.
+
+During local development, email links point to the current dev-server origin
+and can only be opened on a device that can reach that server. Production links
+use the configured site URL in `lib/config.js`.
 
 The Contact form uses the same SMTP settings to send an owner notification and
 a customer acknowledgement. No additional environment variables are required.

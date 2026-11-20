@@ -72,7 +72,11 @@ export async function POST(request: Request) {
   let downloadUrl: string;
   try {
     const token = createCatalogDownloadToken();
-    const url = new URL("/api/catalog/download", SITE.web);
+    const downloadBaseUrl =
+      process.env.NODE_ENV === "development"
+        ? new URL(request.url).origin
+        : SITE.web;
+    const url = new URL("/api/catalog/download", downloadBaseUrl);
     url.searchParams.set("token", token);
     downloadUrl = url.toString();
   } catch (error) {
