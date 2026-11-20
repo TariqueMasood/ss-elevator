@@ -1,11 +1,48 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductCard from "./ProductCard";
-import { products, categories } from "@/lib/products";
+import { products, categories, categoryHash } from "@/lib/products";
 
 export default function ProductList() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    function selectCategory(category) {
+      if (!categories.includes(category)) return;
+      setActiveCategory(category);
+      setSearchQuery("");
+      requestAnimationFrame(() => {
+        document.getElementById("products")?.scrollIntoView();
+      });
+    }
+
+    function handleFooterNavigation(event) {
+      selectCategory(event.detail);
+    }
+
+    function handleHashChange() {
+      const category = categories.find(
+        (item) => categoryHash(item) === window.location.hash,
+      );
+      if (category) selectCategory(category);
+    }
+
+    handleHashChange();
+    window.addEventListener(
+      "product-category-navigation",
+      handleFooterNavigation,
+    );
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener(
+        "product-category-navigation",
+        handleFooterNavigation,
+      );
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
   const visibleProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();

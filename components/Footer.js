@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SITE, wa } from "@/lib/config";
 import { categories } from "@/lib/products";
 import BackToTop from "./BackToTop";
+import FooterCategoryLinks from "./FooterCategoryLinks";
 import WhatsAppIcon from "./icons/WhatsAppIcon";
 
 export default function Footer() {
@@ -30,11 +31,7 @@ export default function Footer() {
             </div>
             <div>
               <h4>Categories</h4>
-              {categories.map((category) => (
-                <Link key={category} href="/#products">
-                  {category}
-                </Link>
-              ))}
+              <FooterCategoryLinks categories={categories} />
             </div>
             <div>
               <h4>Contact</h4>
