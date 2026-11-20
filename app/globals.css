@@ -1375,7 +1375,7 @@ footer a {
   font-size: var(--text-sm);
   transition: color 0.15s ease, padding-left 0.15s ease;
 }
-footer a:hover {
+footer a:not(.wa):hover {
   color: var(--acc-bright);
   padding-left: var(--space-1);
 }
