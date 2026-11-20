@@ -561,20 +561,23 @@ section:not(.hero) h2::after {
   letter-spacing: -0.035em;
 }
 .catalog-viewer {
-  height: min(78vh, 900px);
+  max-height: min(78vh, 900px);
   min-height: 420px;
+  overflow: auto;
   border: 1px solid var(--bd);
   border-radius: var(--radius-lg);
-  overflow: hidden;
   background: var(--alt);
   box-shadow: var(--shadow-md);
   margin-top: var(--space-8);
 }
-.catalog-viewer iframe {
+.catalog-preview-page {
   display: block;
   width: 100%;
-  height: 100%;
-  border: 0;
+  height: auto;
+  margin: 0 auto;
+}
+.catalog-preview-page + .catalog-preview-page {
+  border-top: 1px solid var(--bd);
 }
 .catalog-download {
   display: flex;

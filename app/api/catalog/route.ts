@@ -8,6 +8,7 @@ import {
 import { SITE } from "@/lib/config";
 import { collectRequestMetadata } from "@/lib/request-metadata";
 import { createRateLimiter } from "@/lib/rate-limit";
+import { createCatalogDownloadToken } from "@/lib/catalog-download-token";
 
 export const runtime = "nodejs";
 
@@ -68,10 +69,23 @@ export async function POST(request: Request) {
   }
 
   const details = collectRequestMetadata(request);
-  const downloadUrl = new URL(
-    "/ss-elevator-components.pdf",
-    SITE.web,
-  ).toString();
+  let downloadUrl: string;
+  try {
+    const token = createCatalogDownloadToken();
+    const url = new URL("/api/catalog/download", SITE.web);
+    url.searchParams.set("token", token);
+    downloadUrl = url.toString();
+  } catch (error) {
+    console.error(
+      `Could not create catalog download link for request ${details.requestId}:`,
+      error,
+    );
+    return NextResponse.json(
+      { error: "Catalog downloads are temporarily unavailable." },
+      { status: 503 },
+    );
+  }
+
   const requestInfo: DownloadRequestDetails = { ...details, downloadUrl };
 
   const notifications = await Promise.allSettled([
