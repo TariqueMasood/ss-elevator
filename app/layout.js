@@ -50,7 +50,7 @@ export const viewport = { width: "device-width", initialScale: 1, viewportFit: "
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${plusJakartaSans.variable} ${dmSans.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <ScrollReveal />
         <Header />
         {children}

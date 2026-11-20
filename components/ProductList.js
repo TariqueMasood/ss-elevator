@@ -1,11 +1,22 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ProductCard from "./ProductCard";
 import { products, categories, categoryHash } from "@/lib/products";
 
 export default function ProductList() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const activeTabRef = useRef(null);
+  const previousCategoryRef = useRef(activeCategory);
+
+  useEffect(() => {
+    if (previousCategoryRef.current === activeCategory) return;
+    previousCategoryRef.current = activeCategory;
+    activeTabRef.current?.scrollIntoView({
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeCategory]);
 
   useEffect(() => {
     function selectCategory(category) {
@@ -77,6 +88,7 @@ export default function ProductList() {
           {["All", ...categories].map((category) => (
             <button
               key={category}
+              ref={activeCategory === category ? activeTabRef : undefined}
               type="button"
               className={"tab" + (activeCategory === category ? " on" : "")}
               aria-pressed={activeCategory === category}
