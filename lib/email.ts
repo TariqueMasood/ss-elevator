@@ -29,6 +29,9 @@ interface SmtpConfig {
 }
 
 const NOT_AVAILABLE = "Not Available";
+const EMAIL_BODY_FONT = "'DM Sans', Arial, Helvetica, sans-serif";
+const EMAIL_HEADING_FONT =
+  "'Plus Jakarta Sans', 'DM Sans', Arial, Helvetica, sans-serif";
 
 /** Cached SMTP client and the config it was built from, kept in sync. */
 let cachedTransporter:
@@ -193,7 +196,7 @@ function emailShell(preheader: string, content: string): string {
   <title>${escapeHtml(SITE.name)}</title>
   <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
 </head>
-<body style="margin:0;padding:0;background:${E.pageBg};font-family:Arial,Helvetica,sans-serif;color:${E.text};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+<body style="margin:0;padding:0;background:${E.pageBg};font-family:${EMAIL_BODY_FONT};color:${E.text};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
 
   <!-- Preheader (hidden preview text) -->
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
@@ -216,9 +219,9 @@ function emailShell(preheader: string, content: string): string {
               <tr>
                 <td style="padding:28px 36px;">
                   <!-- Brand name -->
-                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:${E.accBright};">${escapeHtml(SITE.name)}</div>
+                  <div style="font-family:${EMAIL_HEADING_FONT};font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:${E.accBright};">${escapeHtml(SITE.name)}</div>
                   <!-- Tagline -->
-                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;margin-top:4px;color:${E.heroText};opacity:0.85;">${escapeHtml(SITE.tagline)}</div>
+                  <div style="font-family:${EMAIL_BODY_FONT};font-size:13px;margin-top:4px;color:${E.heroText};opacity:0.85;">${escapeHtml(SITE.tagline)}</div>
                 </td>
                 <!-- Decorative gold accent bar on right -->
                 <td width="6" style="background:linear-gradient(180deg,${E.accBright} 0%,${E.acc} 100%);width:6px;min-width:6px;"></td>
@@ -243,10 +246,10 @@ function emailShell(preheader: string, content: string): string {
         <!-- ── Footer band ───────────────────────────────── -->
         <tr>
           <td style="padding:24px 36px;background:${E.altBg};border-top:1px solid ${E.border};">
-            <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:${E.pri};letter-spacing:0.5px;">
+            <p style="margin:0 0 4px;font-family:${EMAIL_HEADING_FONT};font-size:12px;font-weight:bold;color:${E.pri};letter-spacing:0.5px;">
               ${escapeHtml(SITE.name)} &nbsp;·&nbsp; ${escapeHtml(SITE.tagline)}
             </p>
-            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:${E.muted};line-height:1.6;">
+            <p style="margin:0;font-family:${EMAIL_BODY_FONT};font-size:12px;color:${E.muted};line-height:1.6;">
               <a href="mailto:${escapeHtml(SITE.email)}" style="color:${E.priLight};text-decoration:none;">${escapeHtml(SITE.email)}</a>
               &nbsp;&nbsp;·&nbsp;&nbsp;
               <span style="color:${E.faint};">© ${year} ${escapeHtml(SITE.name)}. All rights reserved.</span>
@@ -275,14 +278,14 @@ function emailTable(fields: Array<[string, string, boolean]>): string {
       return `<tr style="background:${rowBg};">
         <th align="left"
             style="width:34%;padding:8px 12px;border:1px solid ${E.border};
-                   font-family:Arial,Helvetica,sans-serif;font-size:12px;
+                   font-family:${EMAIL_BODY_FONT};font-size:12px;
                    line-height:1.4;
                    font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;
                    color:${labelCl};white-space:nowrap;">
           ${escapeHtml(label)}
         </th>
         <td style="padding:8px 12px;border:1px solid ${E.border};
-                   font-family:Arial,Helvetica,sans-serif;font-size:13px;
+                   font-family:${EMAIL_BODY_FONT};font-size:13px;
                    line-height:1.4;font-weight:${weight};color:${valueCl};
                    word-break:break-word;white-space:pre-wrap;">
           ${escapeHtml(value || NOT_AVAILABLE)}
@@ -308,7 +311,7 @@ function emailButton(href: string, label: string): string {
                  box-shadow:0 4px 16px rgba(212,137,26,0.35);">
         <a href="${href}"
            style="display:inline-block;padding:14px 32px;
-                  font-family:Arial,Helvetica,sans-serif;font-size:15px;
+                  font-family:${EMAIL_HEADING_FONT};font-size:15px;
                   font-weight:bold;letter-spacing:0.3px;
                   color:${E.onAcc};text-decoration:none;">
           ${escapeHtml(label)}
@@ -320,7 +323,7 @@ function emailButton(href: string, label: string): string {
 
 // Section heading used inside email body — matches app h2 style
 function emailHeading(text: string): string {
-  return `<h1 style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;
+  return `<h1 style="margin:0 0 20px;font-family:${EMAIL_HEADING_FONT};
                      font-size:24px;line-height:1.2;font-weight:bold;
                      letter-spacing:-0.5px;color:${E.pri};">
     ${escapeHtml(text)}
@@ -328,7 +331,7 @@ function emailHeading(text: string): string {
 }
 
 function emailH2(text: string): string {
-  return `<h2 style="margin:28px 0 12px;font-family:Arial,Helvetica,sans-serif;
+  return `<h2 style="margin:28px 0 12px;font-family:${EMAIL_HEADING_FONT};
                      font-size:16px;line-height:1.3;font-weight:bold;
                      color:${E.pri};border-bottom:2px solid ${E.accLight};
                      padding-bottom:8px;">
@@ -337,14 +340,14 @@ function emailH2(text: string): string {
 }
 
 function emailBody(html: string): string {
-  return `<p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;
+  return `<p style="margin:0 0 16px;font-family:${EMAIL_BODY_FONT};
                     font-size:15px;line-height:1.72;color:${E.text};">
     ${html}
   </p>`;
 }
 
 function emailMuted(html: string): string {
-  return `<p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;
+  return `<p style="margin:0 0 10px;font-family:${EMAIL_BODY_FONT};
                     font-size:13px;line-height:1.6;color:${E.muted};">
     ${html}
   </p>`;
@@ -360,7 +363,7 @@ function userDownloadHtml(name: string, downloadUrl: string): string {
      ${emailBody("Thank you for downloading the SS Elevator components catalog. Your requested file is ready — click the button below to access it.")}
      ${emailButton(safeUrl, "Download Catalog")}
      ${emailMuted(`If the button does not work, copy and paste this link into your browser:`)}
-     <p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:12px;
+     <p style="margin:0 0 24px;font-family:${EMAIL_BODY_FONT};font-size:12px;
                line-height:1.6;word-break:break-all;color:${E.priLight};">
        <a href="${safeUrl}" style="color:${E.priLight};text-decoration:underline;">${safeUrl}</a>
      </p>
@@ -387,7 +390,7 @@ function ownerNotificationHtml(
     `<!-- Alert badge -->
      <div style="display:inline-block;margin:0 0 20px;padding:6px 14px;
                  background:${E.priPale};border-radius:999px;
-                 font-family:Arial,Helvetica,sans-serif;font-size:11px;
+                 font-family:${EMAIL_BODY_FONT};font-size:11px;
                  font-weight:bold;letter-spacing:1px;text-transform:uppercase;
                  color:${E.priLight};">
        📥 &nbsp;New Download Request
@@ -417,7 +420,7 @@ function ownerContactHtml(
     `<!-- Alert badge -->
      <div style="display:inline-block;margin:0 0 20px;padding:6px 14px;
                  background:${E.priPale};border-radius:999px;
-                 font-family:Arial,Helvetica,sans-serif;font-size:11px;
+                 font-family:${EMAIL_BODY_FONT};font-size:11px;
                  font-weight:bold;letter-spacing:1px;text-transform:uppercase;
                  color:${E.priLight};">
        📩 &nbsp;New Contact Enquiry

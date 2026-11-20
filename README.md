@@ -32,6 +32,11 @@ browser's built-in viewer, where the user can choose to download it. Email
 failures are reported by the request form; owner-notification failures are
 logged.
 
+The site uses DM Sans for body text and controls, and Plus Jakarta Sans for
+headings and primary action labels. Email templates use the same font stacks
+with Arial fallbacks; some email clients may use the fallback if they don't
+load web fonts.
+
 During local development, email links point to the current dev-server origin
 and can only be opened on a device that can reach that server. Production links
 use the configured site URL in `lib/config.js`.
