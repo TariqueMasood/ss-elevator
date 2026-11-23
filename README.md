@@ -15,7 +15,19 @@ The catalog is previewed as page images at `/catalog`, so mobile browsers do
 not expose their native PDF open/download controls. The original PDF is stored
 outside `public/`; a visitor must submit the request form to receive a signed,
 seven-day download link by email. Configure these environment variables for
-local development and deployment:
+local development and deployment.
+Next.js automatically loads `.env.local` for local development. Copy
+`.env.example` to `.env.local` and fill in the values. The app reads these
+settings from `process.env`; no environment-specific code changes are needed.
+
+For production, add the same variables to the hosting provider's environment
+settings (for Vercel: Project Settings → Environment Variables, with the
+Production environment selected) and redeploy. Do not commit production
+credentials in an env file. Next.js does not automatically load `.env.prod`.
+For a local production build/test only, use `.env.production.local`; Next.js
+loads it for `npm run build` and `npm start`.
+
+The supported variables are:
 
 - `SMTP_HOST`: SMTP server hostname.
 - `SMTP_PORT`: SMTP port; defaults to `587` when omitted. Port `465` uses TLS.
