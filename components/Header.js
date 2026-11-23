@@ -35,7 +35,7 @@ export default function Header() {
         <nav id="primary-navigation" className={"links" + (open ? " open" : "")}>
           {LINKS.map(([n, h]) => <Link key={n} href={h} onClick={() => setOpen(false)}>{n}</Link>)}
           <Link className="btn" href="/catalog" onClick={() => setOpen(false)}>PDF Catalog</Link>
-          <a className="btn whatsapp" href={wa()} target="_blank" rel="noopener">WhatsApp</a>
+          <a className="btn whatsapp" href={wa()} target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </nav>
       </div>
     </header>

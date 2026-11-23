@@ -7,8 +7,13 @@ import {
 } from "@/lib/email";
 import { SITE } from "@/lib/config";
 import { collectRequestMetadata } from "@/lib/request-metadata";
+import { createRateLimiter } from "@/lib/rate-limit";
+import { createCatalogDownloadToken } from "@/lib/catalog-download-token";
 
 export const runtime = "nodejs";
+
+// 3 download requests per IP per hour — a real user rarely needs more than one.
+const checkRateLimit = createRateLimiter({ limit: 3, windowMs: 60 * 60 * 1000 });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -23,6 +28,9 @@ function cleanText(value: unknown, maxLength: number): string {
 }
 
 export async function POST(request: Request) {
+  const limited = checkRateLimit(request);
+  if (limited) return limited;
+
   if (!request.headers.get("content-type")?.includes("application/json")) {
     return NextResponse.json({ error: "Invalid request." }, { status: 415 });
   }
@@ -61,10 +69,27 @@ export async function POST(request: Request) {
   }
 
   const details = collectRequestMetadata(request);
-  const downloadUrl = new URL(
-    "/ss-elevator-components.pdf",
-    SITE.web,
-  ).toString();
+  let downloadUrl: string;
+  try {
+    const token = createCatalogDownloadToken();
+    const downloadBaseUrl =
+      process.env.NODE_ENV === "development"
+        ? new URL(request.url).origin
+        : SITE.web;
+    const url = new URL("/api/catalog/download", downloadBaseUrl);
+    url.searchParams.set("token", token);
+    downloadUrl = url.toString();
+  } catch (error) {
+    console.error(
+      `Could not create catalog download link for request ${details.requestId}:`,
+      error,
+    );
+    return NextResponse.json(
+      { error: "Catalog downloads are temporarily unavailable." },
+      { status: 503 },
+    );
+  }
+
   const requestInfo: DownloadRequestDetails = { ...details, downloadUrl };
 
   const notifications = await Promise.allSettled([

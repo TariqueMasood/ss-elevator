@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+/** How far down the page (px) before the button appears. */
+const SCROLL_THRESHOLD_PX = 320;
+
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     function updateVisibility() {
-      setIsVisible(window.scrollY > 320);
+      setIsVisible(window.scrollY > SCROLL_THRESHOLD_PX);
     }
 
     updateVisibility();
